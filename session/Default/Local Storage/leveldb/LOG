@@ -1,0 +1,6 @@
+2024/08/21-20:18:02.927 4 Reusing MANIFEST /home/heso/Desktop/projects/anna_hr/apar/session/Default/Local Storage/leveldb/MANIFEST-000001
+2024/08/21-20:18:02.932 4 Recovering log #3
+2024/08/21-20:18:02.933 4 Reusing old log /home/heso/Desktop/projects/anna_hr/apar/session/Default/Local Storage/leveldb/000003.log 
+2024/08/21-20:19:04.056 4 Level-0 table #5: started
+2024/08/21-20:19:04.064 4 Level-0 table #5: 16239 bytes OK
+2024/08/21-20:19:04.067 4 Delete type=0 #3

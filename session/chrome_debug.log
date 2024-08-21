@@ -1,0 +1,42 @@
+[19148:19148:0821/201802.834731:WARNING:chrome_main_delegate.cc(744)] This is Chrome version 127.0.6533.99 (not a warning)
+[19148:19148:0821/201802.911101:INFO:chrome_browser_cloud_management_controller.cc(196)] No machine level policy manager exists.
+[19148:19148:0821/201802.923483:WARNING:browser_management_service.cc(128)] EnterpriseLogoUrl fetch failed with error code -1 and MIME type 
+[19148:19148:0821/201802.985696:WARNING:bluez_dbus_manager.cc(248)] Floss manager not present, cannot set Floss enable/disable.
+[19148:19148:0821/201803.101728:ERROR:object_proxy.cc(576)] Failed to call method: org.freedesktop.ScreenSaver.GetActive: object_path= /org/freedesktop/ScreenSaver: org.freedesktop.DBus.Error.NotSupported: This method is not implemented
+[19148:19170:0821/201803.360486:ERROR:nss_util.cc(345)] After loading Root Certs, loaded==false: NSS error code: -8018
+[19191:19191:0821/201803.447951:WARNING:sandbox_linux.cc(430)] InitializeSandbox() called with multiple threads in process gpu-process.
+[19227:18:0821/201804.833697:INFO:peer_connection_dependency_factory.cc(711)] Running WebRTC with a combined Network and Worker thread.
+[19191:19191:0821/201808.063875:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 1 times!
+[19191:19191:0821/201809.278351:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 2 times!
+[19191:19191:0821/201809.294095:ERROR:gl_surface_presentation_helper.cc(260)] GetVSyncParametersIfAvailable() failed for 3 times!
+[19227:18:0821/201809.947654:INFO:peer_connection_dependency_factory.cc(711)] Running WebRTC with a combined Network and Worker thread.
+[19227:19:0821/201810.531659:WARNING:webrtc_voice_engine.cc(684)] Attempting to stop aecdump when no audio processing module is present
+[19198:19217:0821/201825.240251:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 43
+[19198:19217:0821/201825.246095:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 49
+[19198:19217:0821/201825.252801:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 53
+[19198:19217:0821/201825.257801:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 51
+[19227:18:0821/201825.423933:INFO:peer_connection_dependency_factory.cc(711)] Running WebRTC with a combined Network and Worker thread.
+[19148:19148:0821/201825.477293:INFO:CONSOLE(2)] "Sentry Enabled", source: https://js-static.youdo.com/assets/109671/scripts/application.11df2911.js (2)
+[19148:19148:0821/201826.406125:INFO:CONSOLE(1)] "[Intercom] The App ID in your code snippet has not been set. Set it to your App ID found in settings to complete installation: https://app.intercom.com/a/apps/_/settings/web", source: https://js.intercomcdn.com/frame-modern.77015029.js (1)
+[19227:19:0821/201833.055772:WARNING:webrtc_voice_engine.cc(684)] Attempting to stop aecdump when no audio processing module is present
+[19198:19217:0821/201943.531354:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 11
+[19198:19217:0821/201943.534367:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 163
+[19198:19217:0821/201943.536580:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 165
+[19198:19217:0821/201943.540466:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 167
+[19198:19217:0821/201943.545122:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 21
+[19227:18:0821/201943.749985:INFO:peer_connection_dependency_factory.cc(711)] Running WebRTC with a combined Network and Worker thread.
+[19227:18:0821/201945.018767:INFO:peer_connection_dependency_factory.cc(711)] Running WebRTC with a combined Network and Worker thread.
+[19148:19148:0821/201945.189864:INFO:CONSOLE(2)] "Sentry Enabled", source: https://js-static.youdo.com/assets/109671/scripts/application.11df2911.js (2)
+[19148:19148:0821/201945.585953:INFO:CONSOLE(1)] "[Intercom] The App ID in your code snippet has not been set. Set it to your App ID found in settings to complete installation: https://app.intercom.com/a/apps/_/settings/web", source: https://js.intercomcdn.com/frame-modern.77015029.js (1)
+[19227:19:0821/201946.444797:WARNING:webrtc_voice_engine.cc(684)] Attempting to stop aecdump when no audio processing module is present
+[19227:19:0821/202013.664131:WARNING:webrtc_voice_engine.cc(684)] Attempting to stop aecdump when no audio processing module is present
+[19198:19217:0821/202020.323754:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 241
+[19198:19217:0821/202020.323857:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 19
+[19198:19217:0821/202020.331658:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 243
+[19198:19217:0821/202020.338369:WARNING:spdy_session.cc(2984)] Received HEADERS for invalid stream 245
+[19227:18:0821/202020.412705:INFO:peer_connection_dependency_factory.cc(711)] Running WebRTC with a combined Network and Worker thread.
+[19148:19148:0821/202020.574605:INFO:CONSOLE(2)] "Sentry Enabled", source: https://js-static.youdo.com/assets/109671/scripts/application.11df2911.js (2)
+[19148:19148:0821/202021.082920:INFO:CONSOLE(1)] "[Intercom] The App ID in your code snippet has not been set. Set it to your App ID found in settings to complete installation: https://app.intercom.com/a/apps/_/settings/web", source: https://js.intercomcdn.com/frame-modern.77015029.js (1)
+[19198:19216:0821/202024.403295:WARNING:sqlite_persistent_store_backend_base.cc(198)] Failed to post task from FlushAndNotifyInBackground@net/extras/sqlite/sqlite_persistent_store_backend_base.cc:248 to client_task_runner_.
+[19198:19216:0821/202024.403351:WARNING:sqlite_persistent_store_backend_base.cc(198)] Failed to post task from FlushAndNotifyInBackground@net/extras/sqlite/sqlite_persistent_store_backend_base.cc:248 to client_task_runner_.
+[19148:19148:0821/202024.796261:WARNING:pref_notifier_impl.cc(41)] Pref observer for media_router.cast_allow_all_ips found at shutdown.
