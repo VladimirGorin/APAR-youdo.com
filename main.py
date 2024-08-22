@@ -6,13 +6,15 @@ from selenium.common.exceptions import NoSuchElementException
 from utils import create_browser, save_json
 from logs import Logger
 
+from datetime import datetime
+
 import config.settings as SETTINGS
 
 import e_types
 import time
 import random
 import re
-
+import pytz
 
 class BrowserAutomation:
     def __init__(self):
@@ -109,9 +111,6 @@ class BrowserAutomation:
                     if children_id == e_types.FILTERS_DIV_MENU_FIRST_ITEM_ID[2]:
                         child.click()
                         found_filters_search_radius_menu_children = True
-                        self.logger.info(
-                            "Successfully clicked on the first item of the radius filter"
-                        )
                         break
 
                 if not found_filters_search_radius_menu_children:
@@ -415,9 +414,31 @@ class BrowserAutomation:
         except Exception as monitoring_e:
             self.logger.error(f"Error in monitoring process: {monitoring_e}")
 
+
     def run(self):
         """Main method to start the automation process."""
         try:
+
+            def check_moscow_time():
+                current_time = datetime.now(SETTINGS.TIME_ZONE)
+
+                start_time = current_time.replace(hour=SETTINGS.ACTIVE_TIME[0], minute=0, second=0, microsecond=0)
+                end_time = current_time.replace(hour=SETTINGS.ACTIVE_TIME[1], minute=0, second=0, microsecond=0)
+
+                if start_time <= current_time < end_time:
+                    self.logger.info(f"Between {SETTINGS.ACTIVE_TIME[0]}:00 and {SETTINGS.ACTIVE_TIME[1]}:00 in {SETTINGS.TIME_ZONE}, continue processing.")
+                else:
+                    if current_time >= end_time:
+                        # Calculate the time until 9:00 the next day
+                        next_start_time = start_time + timedelta(days=1)
+                    else:
+                        # Calculate the time until 9:00 today
+                        next_start_time = start_time
+
+                    time_to_sleep = (next_start_time - current_time).total_seconds()
+                    self.logger.info(f"Outside of working hours, sleeping for {time_to_sleep} seconds.")
+                    time.sleep(time_to_sleep)
+
             while True:
                 try:
                     self.start_browser()
@@ -431,6 +452,7 @@ class BrowserAutomation:
 
                     self.logger.info("Setting up monitoring")
                     while True:
+                        check_moscow_time()
                         self.monitoring_tasks()
 
                 except Exception as e:

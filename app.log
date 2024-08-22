@@ -14240,3 +14240,10 @@ TypeError: 'WebElement' object is not subscriptable
 2024-08-21 20:18:09,781 - Logger - INFO - Setting up monitoring
 2024-08-21 20:18:33,072 - Logger - INFO - [https://youdo.com/t12926863?searchRequestId=acb57c88-7a8a-c600-6ee3-d104fba5f25c] Sleeping before start: 59 sec
 2024-08-21 20:19:52,515 - Logger - INFO - [https://youdo.com/t12926740?searchRequestId=acb57c88-7a8a-c600-6ee3-d104fba5f25c] Sleeping before start: 15 sec
+2024-08-23 03:10:15,779 - Logger - INFO - You need to log in.
+2024-08-23 03:10:51,992 - Logger - INFO - Thanks! Saving the session.
+2024-08-23 03:10:59,445 - Logger - INFO - Setting up filters
+2024-08-23 03:11:07,694 - Logger - INFO - Successfully clicked on the first item of the radius filter
+2024-08-23 03:11:11,784 - Logger - INFO - Filters are active!
+2024-08-23 03:11:11,785 - Logger - INFO - Setting up monitoring
+2024-08-23 03:11:11,785 - Logger - INFO - Outside of working hours, sleeping for 31728.214655 seconds.
