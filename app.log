@@ -14247,3 +14247,6 @@ TypeError: 'WebElement' object is not subscriptable
 2024-08-23 03:11:11,784 - Logger - INFO - Filters are active!
 2024-08-23 03:11:11,785 - Logger - INFO - Setting up monitoring
 2024-08-23 03:11:11,785 - Logger - INFO - Outside of working hours, sleeping for 31728.214655 seconds.
+2024-08-24 23:26:14,373 - Logger - INFO - Your session is active!
+2024-08-24 23:26:28,972 - Logger - INFO - Your session is active!
+2024-08-24 23:26:41,677 - Logger - INFO - You need to log in.

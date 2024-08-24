@@ -3,14 +3,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from config.settings import MODE
-import json
+import json, os
 
 def create_browser():
     """Creates and configures a new instance of the Chrome browser."""
     options = Options()
 
     # Set user data directory for session persistence
-    options.add_argument(f"user-data-dir=./session")
+    session_path = os.path.join(os.getcwd(), "session")
+    options.add_argument(f"user-data-dir={session_path}")
 
     if not MODE:
         # If the mode is not production, use headless mode for the server
