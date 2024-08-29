@@ -207,6 +207,8 @@ class BrowserAutomation:
 
                     for task in all_tasks:
                         try:
+                            time.sleep(5)
+
                             if not isinstance(task, dict):
                                 raise Exception(
                                     f"Task has to be an object, not: {type(task)}")
@@ -250,11 +252,23 @@ class BrowserAutomation:
                                 find_type="elements", where=self.browser, element_data=e_types.TASK_DIV_PRICE_WRAPPER_CLASS
                             )
 
+                            ## Price filter
+                            try:
+
+                                task_price = int(task["price"])
+                            except Exception:
+                                raise Exception("Can't parse the task price at number")
+
+                            if task_price <= 10000:
+                                task_price += 5000
+                            elif task_price > 10000:
+                                task_price += 7000
+
                             for block in price_wrapper:
                                 try:
                                     price_input = block.find_element(
                                         By.TAG_NAME, 'input')
-                                    price_input.send_keys(task["price"])
+                                    price_input.send_keys(task_price)
                                     break
                                 except NoSuchElementException:
                                     continue
