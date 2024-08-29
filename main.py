@@ -211,7 +211,7 @@ class BrowserAutomation:
                     all_tasks = self.monitoring_settings["filtered_tasks"]
 
                     if not all_tasks:
-                        time_to_sleep = generate_random_time(3, 10)
+                        time_to_sleep = generate_random_time(60, 600)
                         self.logger.info(
                             f"No tasks to launch, sleeping for: {time_to_sleep + 5} seconds"
                         )
