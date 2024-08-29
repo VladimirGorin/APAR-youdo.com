@@ -20,7 +20,8 @@ TASKS_A_TASK_TITLE_CLASS = ["class", "a", "TasksList_title"]
 TASKS_DIV_TASK_PRICE_CLASS = ["class", "div", "TasksList_price"]
 TASKS_BUTTON_SHOW_MORE_CLASS = ["class", "button", "TasksList_showMoreButton"]
 
-TASK_BUTTON_ADD_OFFER_CUSTOM = ["data-test", "button", "taskActionAddOffer"]
+TASK_BUTTON_ADD_OFFER_CUSTOM = ["data-test", "button", ["taskActionAddOffer", "taskActionOfferServices"]]
+
 TASK_DIV_TEXT_TEMPLATES_CLASS = ["class", "div", "templatesBtn"]
 TASK_DIV_TEXT_TEMPLATES_DROPDOWN_CLASS = ["class", "div", "templatesDropdown"]
 TASK_DIV_TEMPLATE_CLASS = ["class", "div", "templateItem"]

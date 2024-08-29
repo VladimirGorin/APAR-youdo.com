@@ -185,6 +185,18 @@ class BrowserAutomation:
 
         return data
 
+    def save_html_with_timestamp(self):
+        os.makedirs('./errored_pages', exist_ok=True)
+
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"page_{timestamp}.html"
+        filepath = os.path.join('./errored_pages', filename)
+
+        page_source = self.browser.page_source
+
+        with open(filepath, 'w', encoding='utf-8') as file:
+            file.write(page_source)
+
     def monitoring_tasks(self):
         """Monitors and processes tasks."""
         try:
@@ -208,6 +220,27 @@ class BrowserAutomation:
                     for task in all_tasks:
                         try:
                             time.sleep(5)
+
+                            def find_add_order_button():
+                                buttons_value_format = e_types.TASK_BUTTON_ADD_OFFER_CUSTOM[2]
+
+                                for id, button_value in enumerate(buttons_value_format):
+                                    add_offer_button = self.browser.find_elements(
+                                        By.XPATH, f"//*[@data-test='{button_value}']"
+                                    )
+
+                                    if add_offer_button:
+                                        add_offer_button = add_offer_button[0]
+                                        break
+
+                                    if id+1 >= len(buttons_value_format):
+                                        add_offer_button = None
+                                        self.logger.info("Button not found")
+                                        break
+
+                                    if not len(add_offer_button):
+                                        self.logger.info(f"Button type {button_value} not found, trying to search {buttons_value_format[id + 1]}")
+                                return add_offer_button
 
                             if not isinstance(task, dict):
                                 raise Exception(
@@ -240,10 +273,15 @@ class BrowserAutomation:
                             time.sleep(time_to_sleep)
 
                             # Click on the add offer button
-                            add_offer_button = self.browser.find_element(
-                                By.CSS_SELECTOR, f"[{e_types.TASK_BUTTON_ADD_OFFER_CUSTOM[0]}='{e_types.TASK_BUTTON_ADD_OFFER_CUSTOM[2]}']"
-                            )
-                            add_offer_button.click()
+                            add_offer_button = find_add_order_button()
+
+                            if add_offer_button:
+                                add_offer_button.click()
+                            else:
+
+                                self.save_html_with_timestamp()
+
+                                raise Exception("The add offer button is not found")
 
                             time.sleep(2)
 

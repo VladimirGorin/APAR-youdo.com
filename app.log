@@ -14250,3 +14250,12 @@ TypeError: 'WebElement' object is not subscriptable
 2024-08-24 23:26:14,373 - Logger - INFO - Your session is active!
 2024-08-24 23:26:28,972 - Logger - INFO - Your session is active!
 2024-08-24 23:26:41,677 - Logger - INFO - You need to log in.
+2024-08-29 17:33:02,984 - Logger - INFO - You need to log in.
+2024-08-29 17:33:37,834 - Logger - INFO - Thanks! Saving the session.
+2024-08-29 17:33:45,832 - Logger - INFO - Setting up filters
+2024-08-29 17:33:58,454 - Logger - INFO - Filters are active!
+2024-08-29 17:33:58,454 - Logger - INFO - Setting up monitoring
+2024-08-29 17:33:58,454 - Logger - INFO - Between 9:00 and 18:00 in Europe/Moscow, continue processing.
+2024-08-29 17:34:25,064 - Logger - INFO - [https://youdo.com/t12954866?searchRequestId=2deec537-f94d-6461-9dd5-dfac346de126] Sleeping before start: 30 sec
+2024-08-29 17:35:20,732 - Logger - INFO - [https://youdo.com/t12954856?searchRequestId=2deec537-f94d-6461-9dd5-dfac346de126] Sleeping before start: 22 sec
+2024-08-29 17:36:08,920 - Logger - INFO - [https://youdo.com/t12954852?searchRequestId=2deec537-f94d-6461-9dd5-dfac346de126] Sleeping before start: 52 sec
