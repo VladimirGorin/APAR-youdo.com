@@ -518,6 +518,6 @@ class BrowserAutomation:
 if __name__ == "__main__":
     try:
         automation = BrowserAutomation()
-        # automation.run()
+        automation.run()
     except KeyboardInterrupt:
         print("\nBye Bye.")

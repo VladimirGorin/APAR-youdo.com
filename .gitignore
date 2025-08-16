@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 __pycache__/
 session/
 venv
 *.pyc
+=======
+/__pycache__
+/session
+>>>>>>> ad780e2019ea117bad78865573ffbc50ca7d3952
