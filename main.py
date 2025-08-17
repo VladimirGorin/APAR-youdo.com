@@ -15,6 +15,7 @@ import time
 import random
 import re
 
+
 class BrowserAutomation:
     def __init__(self):
         self.browser = None
@@ -24,7 +25,9 @@ class BrowserAutomation:
         self.monitoring_settings = {
             "first_time_launch": True,
             "filtered_tasks": [],
-            "tasks_file": "./data/monitoring_tasks.json"
+            "stats": SETTINGS.STATS if SETTINGS.STATS else {"all": 0},
+            "tasks_file": "./data/monitoring_tasks.json",
+            "stats_file": "./data/stats.json"
         }
 
     def start_browser(self):
@@ -238,7 +241,8 @@ class BrowserAutomation:
                                         break
 
                                     if not len(add_offer_button):
-                                        self.logger.info(f"Button type {button_value} not found, trying to search {buttons_value_format[id + 1]}")
+                                        self.logger.info(
+                                            f"Button type {button_value} not found, trying to search {buttons_value_format[id + 1]}")
                                 return add_offer_button
 
                             if not isinstance(task, dict):
@@ -280,7 +284,8 @@ class BrowserAutomation:
 
                                 self.save_html_with_timestamp()
 
-                                raise Exception("The add offer button is not found")
+                                raise Exception(
+                                    "The add offer button is not found")
 
                             time.sleep(2)
 
@@ -289,12 +294,13 @@ class BrowserAutomation:
                                 find_type="elements", where=self.browser, element_data=e_types.TASK_DIV_PRICE_WRAPPER_CLASS
                             )
 
-                            ## Price filter
+                            # Price filter
                             try:
 
                                 task_price = int(task["price"])
                             except Exception:
-                                raise Exception("Can't parse the task price at number")
+                                raise Exception(
+                                    "Can't parse the task price at number")
 
                             if task_price <= 10000:
                                 task_price += 5000
@@ -345,6 +351,8 @@ class BrowserAutomation:
                                 where=dialog_popup, element_data=e_types.TASK_BUTTON_SUBMIT_CLASS
                             )
                             task_submit_button.click()
+
+                            self.adding_stat(all=1)
 
                             time.sleep(2)
 
@@ -465,6 +473,18 @@ class BrowserAutomation:
         except Exception as monitoring_e:
             self.logger.error(f"Error in monitoring process: {monitoring_e}")
 
+    def adding_stat(self, all=0):
+        """Adds statistics to the stats file."""
+        try:
+
+            self.monitoring_settings["stats"]["all"] += all
+
+            save_json(data=self.monitoring_settings["stats"],
+                      filename=self.monitoring_settings["stats_file"])
+
+        except Exception as e:
+            self.logger.error(f"Error writing stats file: {e}")
+
     def run(self):
         """Main method to start the automation process."""
         try:
@@ -472,11 +492,14 @@ class BrowserAutomation:
             def check_moscow_time():
                 current_time = datetime.now(SETTINGS.TIME_ZONE)
 
-                start_time = current_time.replace(hour=SETTINGS.ACTIVE_TIME[0], minute=0, second=0, microsecond=0)
-                end_time = current_time.replace(hour=SETTINGS.ACTIVE_TIME[1], minute=0, second=0, microsecond=0)
+                start_time = current_time.replace(
+                    hour=SETTINGS.ACTIVE_TIME[0], minute=0, second=0, microsecond=0)
+                end_time = current_time.replace(
+                    hour=SETTINGS.ACTIVE_TIME[1], minute=0, second=0, microsecond=0)
 
                 if start_time <= current_time < end_time:
-                    self.logger.info(f"Between {SETTINGS.ACTIVE_TIME[0]}:00 and {SETTINGS.ACTIVE_TIME[1]}:00 in {SETTINGS.TIME_ZONE}, continue processing.")
+                    self.logger.info(
+                        f"Between {SETTINGS.ACTIVE_TIME[0]}:00 and {SETTINGS.ACTIVE_TIME[1]}:00 in {SETTINGS.TIME_ZONE}, continue processing.")
                 else:
                     if current_time >= end_time:
                         # Calculate the time until 9:00 the next day
@@ -485,8 +508,10 @@ class BrowserAutomation:
                         # Calculate the time until 9:00 today
                         next_start_time = start_time
 
-                    time_to_sleep = (next_start_time - current_time).total_seconds()
-                    self.logger.info(f"Outside of working hours, sleeping for {time_to_sleep} seconds.")
+                    time_to_sleep = (next_start_time -
+                                     current_time).total_seconds()
+                    self.logger.info(
+                        f"Outside of working hours, sleeping for {time_to_sleep} seconds.")
                     time.sleep(time_to_sleep)
 
             while True:

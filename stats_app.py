@@ -1,6 +1,7 @@
 import tkinter as tk
 import json
 import os
+import config.settings as SETTINGS
 
 
 class StatsApp:
@@ -9,13 +10,6 @@ class StatsApp:
         self.root.title("Статистика откликов")
         self.root.geometry("400x120")
         self.root.config(bg="#f0f0f0")
-
-        # JSON file with data
-        self.filename = "./data/monitoring_tasks.json"
-        if not os.path.exists(self.filename):
-            os.makedirs(os.path.dirname(self.filename), exist_ok=True)
-            with open(self.filename, "w", encoding="utf-8") as f:
-                json.dump([], f, ensure_ascii=False, indent=2)
 
         # Label to show the count
         self.stats_label = tk.Label(self.root, text="Общее количество откликов: 0",
@@ -35,10 +29,8 @@ class StatsApp:
 
     def update_stats(self):
         """Update the count and slider"""
-        with open(self.filename, "r", encoding="utf-8") as f:
-            data = json.load(f)
 
-        count = len(data)
+        count = SETTINGS.load_stats().get("all", 0)
         self.stats_label.config(text=f"Общее количество откликов: {count}")
 
 
