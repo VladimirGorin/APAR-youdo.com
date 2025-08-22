@@ -18,8 +18,43 @@ def load_stats():
         with open("./data/stats.json", "r", encoding="utf-8") as f:
             return json.load(f)
     except FileNotFoundError:
-        return {"all": 0}  # Default stats if file does not exist
+        return []  # Default stats if file does not exist
 
+
+# Days of the week when the script is active
+ACTIVE_DAYS = {
+    0: True,   # Monday
+    1: True,  # Tuesday
+    2: True,  # Wednesday
+    3: True,   # Thursday
+    4: True,  # Friday
+    5: False,  # Saturday
+    6: False   # Sunday
+}
+
+# Array for response templates
+RESPONSE_TEMPLATES = [
+    {
+        "Дизайн сайта": ["дизайн сайта", "дизайн"],
+    },
+    {
+        "Редизайн сайта": ["редизайн сайта", "редизайн"],
+    },
+    {
+        "SEO (поисковая оптимизация)": ["seo", "поисковая оптимизация", "сео"],
+    },
+    {
+        "Сайт WordPress": ["wordpress", "сайт на wordpress", "вордпресс"],
+    },
+    {
+        "Сайт на 1С-Битрикс": ["1с-битрикс", "битрикс", "сайт на 1с-битрикс"],
+    },
+    {
+        "Создание лэндинга": ["создание лэндинга", "лендинг", "landing page"],
+    }
+]
+
+BASE_TEMPLATE_NAME = "Общий отклик"
 
 # Loading statistics
 STATS = load_stats()

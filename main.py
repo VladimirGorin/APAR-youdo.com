@@ -14,6 +14,7 @@ import e_types
 import time
 import random
 import re
+import os
 
 
 class BrowserAutomation:
@@ -22,10 +23,11 @@ class BrowserAutomation:
         self.logger = Logger()
         self.auth_status = False
         self.filters_active = False
+        self.categories_active = False
         self.monitoring_settings = {
             "first_time_launch": True,
             "filtered_tasks": [],
-            "stats": SETTINGS.STATS if SETTINGS.STATS else {"all": 0},
+            "stats": SETTINGS.STATS,
             "tasks_file": "./data/monitoring_tasks.json",
             "stats_file": "./data/stats.json"
         }
@@ -52,12 +54,15 @@ class BrowserAutomation:
         else:
             self.auth_status = True
             self.filters_active = True
+            self.categories_active = True
             self.logger.info("Your session is active!")
 
     def handle_login(self):
         """Prompts the user to log in manually and updates the authentication status."""
         self.auth_status = False
         self.filters_active = False
+        self.categories_active = False
+
         self.logger.info("You need to log in.")
         input("\nPlease press ENTER when you finish the login: \n")
         self.logger.info("Thanks! Saving the session.")
@@ -160,6 +165,107 @@ class BrowserAutomation:
         except Exception as filter_e:
             self.logger.error(filter_e)
 
+    def apply_categories(self):
+        """Applies categories to the tasks."""
+        try:
+            self.logger.info("Setting up categories")
+            time.sleep(2)
+            self.browser.get(SETTINGS.MAIN_SITES[0] + "/profile/tariffs")
+            time.sleep(5)
+
+            # Get all tariffs info text
+            tariffs_info = self.browser.find_elements(
+                By.CSS_SELECTOR,
+                f"{e_types.TARIFFS_DIV_CONTAINER_CLASS[1]}[{e_types.TARIFFS_DIV_CONTAINER_CLASS[0]}*='{e_types.TARIFFS_DIV_CONTAINER_CLASS[2]}'] {e_types.TARIFFS_DIV_TARIFF_TEXT_CLASS[1]}[{e_types.TARIFFS_DIV_TARIFF_TEXT_CLASS[0]}*='{e_types.TARIFFS_DIV_TARIFF_TEXT_CLASS[2]}']"
+            )
+
+            if not tariffs_info:
+                raise Exception("Tariffs info not found")
+
+            tariffs_texts = [el.text for el in tariffs_info]
+
+            self.logger.info(f"Tariffs found: {tariffs_texts}")
+
+            time.sleep(2)
+            self.browser.get(SETTINGS.MAIN_SITES[0] + "/tasks-all-opened-all")
+            time.sleep(5)
+
+            # Activate categories
+            categories_container = self.browser.find_element(
+                By.CSS_SELECTOR, f"{e_types.CATEGORIES_UL_CONTAINER_CLASS[1]}[{e_types.CATEGORIES_UL_CONTAINER_CLASS[0]}*='{e_types.CATEGORIES_UL_CONTAINER_CLASS[2]}']"
+            )
+
+            categories_label_items = categories_container.find_elements(
+                By.CSS_SELECTOR, f"{e_types.CATEGORY_LABEL_CLASS[1]}[{e_types.CATEGORY_LABEL_CLASS[0]}*='{e_types.CATEGORY_LABEL_CLASS[2]}']"
+            )
+
+            categories_items = categories_container.find_elements(
+                By.CSS_SELECTOR, f"{e_types.CATEGORIES_LI_CATEGORY_CLASS[1]}[{e_types.CATEGORIES_LI_CATEGORY_CLASS[0]}*='{e_types.CATEGORIES_LI_CATEGORY_CLASS[2]}']"
+            )
+
+            if not categories_items:
+                raise Exception("Categories items not found")
+
+            if not categories_label_items:
+                raise Exception("Categories label items not found")
+
+            # Open all categories
+            for category_item in categories_items:
+                try:
+                    category_arrows = category_item.find_elements(
+                        By.CSS_SELECTOR, f"{e_types.CATEGORIES_LI_CATEGORY_ARROW_CLASS[1]}[{e_types.CATEGORIES_LI_CATEGORY_ARROW_CLASS[0]}*='{e_types.CATEGORIES_LI_CATEGORY_ARROW_CLASS[2]}']"
+                    )
+
+                    if category_arrows:
+                        category_arrow = category_arrows[0]
+                        arrow_classes = category_arrow.get_attribute(
+                            "class")
+                        if "Categories_opened" not in arrow_classes:
+                            self.browser.execute_script(
+                                "arguments[0].scrollIntoView({block: 'center'});", category_arrow)
+                            time.sleep(1)
+                            category_arrow.click()
+
+                except Exception as category_e:
+                    self.logger.error(
+                        f"Error while processing category '{category_item.text.strip()}': {category_e}"
+                    )
+
+            time.sleep(2)
+            # Find categories and subcategories matching tariffs
+            for tariff_text in tariffs_texts:
+                tariff_text = tariff_text.strip()
+
+                for category_item in categories_label_items:
+                    try:
+                        category_text = category_item.text.strip()
+
+                        if category_text == tariff_text:
+                            self.browser.execute_script(
+                                "arguments[0].scrollIntoView({block: 'center'});", category_item
+                            )
+                            time.sleep(2)
+
+                            category_item.click()
+                            self.logger.info(
+                                f"Category '{category_text}' activated (matched tariff)"
+                            )
+                            time.sleep(2)
+                            break
+
+                    except Exception as category_e:
+                        self.logger.error(
+                            f"Error while processing category '{category_item.text.strip()}': {category_e}"
+                        )
+
+            self.categories_active = True
+            self.logger.info("Categories are active!")
+
+            time.sleep(5)
+
+        except Exception as category_e:
+            self.logger.error(category_e)
+
     def get_element_by_css_selector(self, find_type="element", where=None, element_data=None):
         """Finds an element or elements by CSS selector."""
         if where is None:
@@ -188,6 +294,7 @@ class BrowserAutomation:
         return data
 
     def save_html_with_timestamp(self):
+        """Saves the current page source with a timestamp."""
         os.makedirs('./errored_pages', exist_ok=True)
 
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -202,6 +309,14 @@ class BrowserAutomation:
     def monitoring_tasks(self):
         """Monitors and processes tasks."""
         try:
+            def get_template_by_title(title: str) -> str:
+                title_lower = title.lower()
+                for template in SETTINGS.RESPONSE_TEMPLATES:
+                    for template_name, keywords in template.items():
+                        for keyword in keywords:
+                            if keyword.lower() in title_lower:
+                                return template_name
+                return SETTINGS.BASE_TEMPLATE_NAME
 
             def generate_random_time(from_, to_):
                 """Generates a random time within the given range."""
@@ -318,11 +433,19 @@ class BrowserAutomation:
 
                             time.sleep(2)
 
-                            # Select the first template of text
+                            # Select the template by title
                             text_templates = self.get_element_by_css_selector(
                                 where=self.browser, element_data=e_types.TASK_DIV_TEXT_TEMPLATES_CLASS
                             )
-                            text_templates.click()
+
+                            try:
+                                text_templates.click()
+                            except Exception as text_templates_e:
+                                self.logger.error(
+                                    f"Error trying to click on the text templates: {text_templates_e}")
+                                raise Exception(
+                                    "Can't click on the text templates")
+
                             time.sleep(2)
 
                             text_templates_dropdown = self.get_element_by_css_selector(
@@ -338,8 +461,31 @@ class BrowserAutomation:
 
                             time.sleep(2)
 
-                            text_first_template = text_templates_dropdown[0]
-                            text_first_template.click()
+                            template_name_by_title = get_template_by_title(
+                                task["title"]
+                            )
+
+                            templates_texts = [
+                                {"text": el.text, "id": el_index}
+                                for el_index, el in enumerate(text_templates_dropdown)
+                            ]
+
+                            if not templates_texts:
+                                raise Exception(
+                                    "Text templates list is empty, can't select a template")
+
+                            find_template = False
+                            for template in templates_texts:
+                                if template["text"] == template_name_by_title:
+                                    text_templates_dropdown[template["id"]].click(
+                                    )
+                                    find_template = True
+                                    break
+
+                            if not find_template:
+                                raise Exception(
+                                    f"Template with title '{template_name_by_title}' not found in the dropdown"
+                                )
 
                             time.sleep(2)
 
@@ -352,7 +498,8 @@ class BrowserAutomation:
                             )
                             task_submit_button.click()
 
-                            self.adding_stat(all=1)
+                            self.adding_stat(task_link=task["link"],
+                                             task_title=task["title"])
 
                             time.sleep(2)
 
@@ -468,16 +615,26 @@ class BrowserAutomation:
                 launch_tasks()
 
             time.sleep(5)
-            self.browser.get("https://youdo.com/tasks-all-opened-all")
+            self.browser.get(SETTINGS.MAIN_SITES[0] + "/tasks-all-opened-all")
 
         except Exception as monitoring_e:
             self.logger.error(f"Error in monitoring process: {monitoring_e}")
 
-    def adding_stat(self, all=0):
+    def adding_stat(self, task_title="", task_link=""):
         """Adds statistics to the stats file."""
         try:
 
-            self.monitoring_settings["stats"]["all"] += all
+            stat_data = {
+                "date": datetime.now(SETTINGS.TIME_ZONE).strftime('%Y-%m-%d %H:%M:%S'),
+                "responded": True,
+                "task": {
+                    "title": task_title,
+                    "link": task_link
+                }
+            }
+
+            self.monitoring_settings["stats"].append(stat_data)
+            self.logger.info(f"Adding stat: {stat_data}")
 
             save_json(data=self.monitoring_settings["stats"],
                       filename=self.monitoring_settings["stats_file"])
@@ -488,6 +645,9 @@ class BrowserAutomation:
     def run(self):
         """Main method to start the automation process."""
         try:
+            def check_day_allowed():
+                today = datetime.now(SETTINGS.TIME_ZONE).weekday()
+                return SETTINGS.ACTIVE_DAYS.get(today, False)
 
             def check_moscow_time():
                 current_time = datetime.now(SETTINGS.TIME_ZONE)
@@ -496,6 +656,17 @@ class BrowserAutomation:
                     hour=SETTINGS.ACTIVE_TIME[0], minute=0, second=0, microsecond=0)
                 end_time = current_time.replace(
                     hour=SETTINGS.ACTIVE_TIME[1], minute=0, second=0, microsecond=0)
+
+                if not check_day_allowed():
+                    # if the day is not allowed — sleep until tomorrow 00:01
+                    next_day = (current_time + timedelta(days=1)).replace(
+                        hour=0, minute=1, second=0, microsecond=0
+                    )
+                    time_to_sleep = (next_day - current_time).total_seconds()
+                    self.logger.info(
+                        f"Today ({current_time.strftime('%A')}) is a non-working day, sleeping for {time_to_sleep} seconds.")
+                    time.sleep(time_to_sleep)
+                    return
 
                 if start_time <= current_time < end_time:
                     self.logger.info(
@@ -520,7 +691,11 @@ class BrowserAutomation:
                     self.check_login()
 
                     time.sleep(5)
-                    self.browser.get("https://youdo.com/tasks-all-opened-all")
+                    self.browser.get(
+                        SETTINGS.MAIN_SITES[0] + "/tasks-all-opened-all")
+
+                    if not self.categories_active:
+                        self.apply_categories()
 
                     if not self.filters_active:
                         self.apply_filters()

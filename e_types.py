@@ -3,6 +3,16 @@
 
 LOGIN_SPAN_CUSTOM = ["data-test", "span", "LoginButton"]
 
+TARIFFS_DIV_CONTAINER_CLASS = ["class", "div", "Tariffs_tilesContainer"]
+TARIFFS_DIV_TARIFF_TEXT_CLASS = ["class", "div", "Tariffs_text"]
+
+CATEGORIES_UL_CONTAINER_CLASS = ["class", "ul", "Categories_container"]
+CATEGORIES_LI_CATEGORY_CLASS = ["class", "li", "Categories_item"]
+CATEGORIES_LI_CATEGORY_ARROW_CLASS = ["class", "span", "Categories_arrow"]
+CATEGORY_LABEL_CLASS = ["class", "label", "Checkbox_label"]
+
+CATEGORIES_LI_SUBCATEGORY_CLASS = ["class", "li", "Categories_subItem"]
+
 FILTERS_DIV_FILTERS_BUTTON_CLASS = ["class", "div", "KeywordsFilter_filterCounter"]
 FILTERS_DIV_RADIUS_SELECT_CLASS = ["class", "div", "youdoSelect"]
 FILTERS_DIV_MENU_CLASS = ["class", "div", "youdoSelect__menu"]
