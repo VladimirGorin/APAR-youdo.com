@@ -10,6 +10,8 @@ CATEGORIES_UL_CONTAINER_CLASS = ["class", "ul", "Categories_container"]
 CATEGORIES_LI_CATEGORY_CLASS = ["class", "li", "Categories_item"]
 CATEGORIES_LI_CATEGORY_ARROW_CLASS = ["class", "span", "Categories_arrow"]
 CATEGORY_LABEL_CLASS = ["class", "label", "Checkbox_label"]
+ALL_CATEGORIES_LI_CLASS = ["class", "li", "Categories_all"]
+CATEGORIES_INPUT_CHECKBOX_TYPE = ["type", "input", "checkbox"]
 
 CATEGORIES_LI_SUBCATEGORY_CLASS = ["class", "li", "Categories_subItem"]
 

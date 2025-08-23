@@ -80,6 +80,10 @@ class BrowserAutomation:
 
             if len(filters_elements) == 2:
                 filters_popup_button = filters_elements[-1]
+                self.browser.execute_script(
+                    "arguments[0].scrollIntoView({block: 'center'});", filters_popup_button)
+
+                time.sleep(2)
                 filters_popup_button.click()
 
                 time.sleep(2)
@@ -184,13 +188,16 @@ class BrowserAutomation:
 
             tariffs_texts = [el.text for el in tariffs_info]
 
+            # tariffs_texts = ['Подключить тариф',
+            #                  'Дизайн сайтов и приложений', 'Разработка ПО']
+
             self.logger.info(f"Tariffs found: {tariffs_texts}")
 
             time.sleep(2)
             self.browser.get(SETTINGS.MAIN_SITES[0] + "/tasks-all-opened-all")
             time.sleep(5)
 
-            # Activate categories
+            # Get categories
             categories_container = self.browser.find_element(
                 By.CSS_SELECTOR, f"{e_types.CATEGORIES_UL_CONTAINER_CLASS[1]}[{e_types.CATEGORIES_UL_CONTAINER_CLASS[0]}*='{e_types.CATEGORIES_UL_CONTAINER_CLASS[2]}']"
             )
@@ -208,6 +215,33 @@ class BrowserAutomation:
 
             if not categories_label_items:
                 raise Exception("Categories label items not found")
+
+            # Check if categories active
+            all_categories_item = self.browser.find_element(
+                By.CSS_SELECTOR,
+                f"{e_types.ALL_CATEGORIES_LI_CLASS[1]}[{e_types.ALL_CATEGORIES_LI_CLASS[0]}*='{e_types.ALL_CATEGORIES_LI_CLASS[2]}']"
+            )
+
+            all_categories_label_el = all_categories_item.find_element(
+                By.CSS_SELECTOR,
+                f"{e_types.CATEGORY_LABEL_CLASS[1]}[{e_types.CATEGORY_LABEL_CLASS[0]}*='{e_types.CATEGORY_LABEL_CLASS[2]}']"
+            )
+
+            checkbox_input = all_categories_item.find_element(
+                By.CSS_SELECTOR,
+                f"{e_types.CATEGORIES_INPUT_CHECKBOX_TYPE[1]}[{e_types.CATEGORIES_INPUT_CHECKBOX_TYPE[0]}='{e_types.CATEGORIES_INPUT_CHECKBOX_TYPE[2]}']"
+            )
+
+            is_checked = checkbox_input.is_selected()
+
+            if is_checked:
+                all_categories_label_el.click()
+            else:
+                all_categories_label_el.click()
+                time.sleep(1)
+                all_categories_label_el.click()
+
+            time.sleep(2)
 
             # Open all categories
             for category_item in categories_items:
