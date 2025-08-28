@@ -15,7 +15,7 @@ import time
 import random
 import re
 import os
-
+import getpass
 
 class BrowserAutomation:
     def __init__(self):
@@ -765,7 +765,7 @@ if __name__ == "__main__":
                     f"This script is expired. Please contact the author. (Allowed until {allowed_date})")
                 exit(1)
 
-            secret_key = input(
+            secret_key = getpass.getpass(
                 "tripsc eht trats ot yek terces eht retnE esaelP: ")
 
             if secret_key != "the script":
