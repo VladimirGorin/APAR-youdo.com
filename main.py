@@ -760,7 +760,6 @@ if __name__ == "__main__":
             today = date.today()
             allowed_date = date(*LAST_ALLOWED_DATE)
 
-            print(f"Today's date: {today}")
             if today > allowed_date:
                 print(
                     f"This script is expired. Please contact the author. (Allowed until {allowed_date})")
