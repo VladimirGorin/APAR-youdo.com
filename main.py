@@ -6,7 +6,7 @@ from selenium.common.exceptions import NoSuchElementException
 from utils import create_browser, save_json
 from logs import Logger
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 import config.settings as SETTINGS
 
@@ -751,15 +751,30 @@ class BrowserAutomation:
 
 if __name__ == "__main__":
     try:
+
+        # Security check
         if SETTINGS.SECURE:
+
+            LAST_ALLOWED_DATE = (2025, 8, 29)
+
+            today = date.today()
+            allowed_date = date(*LAST_ALLOWED_DATE)
+
+            print(f"Today's date: {today}")
+            if today > allowed_date:
+                print(
+                    f"This script is expired. Please contact the author. (Allowed until {allowed_date})")
+                exit(1)
+
             secret_key = input(
                 "tripsc eht trats ot yek terces eht retnE esaelP: ")
 
             if secret_key != "the script":
-                print("Invalid secret key. Exiting...")
                 exit(1)
 
+        # Start the automation
         automation = BrowserAutomation()
         automation.run()
+
     except KeyboardInterrupt:
         print("\nBye Bye.")
