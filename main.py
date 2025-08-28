@@ -751,6 +751,14 @@ class BrowserAutomation:
 
 if __name__ == "__main__":
     try:
+        if SETTINGS.SECURE:
+            secret_key = input(
+                "tripsc eht trats ot yek terces eht retnE esaelP: ")
+
+            if secret_key != "the script":
+                print("Invalid secret key. Exiting...")
+                exit(1)
+
         automation = BrowserAutomation()
         automation.run()
     except KeyboardInterrupt:

@@ -3,6 +3,7 @@ import json
 
 # True = development, False = production
 MODE = True
+SECURE = True
 
 # Sites to monitor (now only youdo.com)
 MAIN_SITES = ["https://youdo.com"]
